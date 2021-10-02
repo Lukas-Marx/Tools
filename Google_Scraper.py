@@ -22,7 +22,7 @@ f = open('results.csv', 'w')
 writer = csv.writer(f)
 
 while s <= Sequences :
-    while i <= s*50 :
+    while i <= s*50 : #change num and stop for the amount of links you want to scrape
         for j in search(Requests[i], tld="com", num=2, stop=2, pause=25, user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15'):
             writer.writerow([j, Names[i]])
             print(Names[i])
