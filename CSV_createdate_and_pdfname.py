@@ -35,9 +35,10 @@ while i < repeat:
     pdf = PdfFileReader('/path/'+PDF_name[i])
     info = pdf.getDocumentInfo()
     create_date = info['/ModDate']#CreationDate if init creation is wanted
+    Doc_title = info['/Title']
     fix = re.search('\d+', create_date)
     a = datetime.strptime(fix.group(),'%Y%m%d%H%M%S').date()
-    write_xx = (PDF_name[i], a)
+    write_xx = (PDF_name[i],Doc_title, a)
     writer_p.writerow(write_xx)
     i += 1
 
