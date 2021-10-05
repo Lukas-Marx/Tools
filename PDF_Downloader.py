@@ -26,22 +26,33 @@ f = open('results.csv', 'w')
 writer = csv.writer(f)
 
 while i <= max_length-1:
-    response = requests.get(url_list[i])
-    opener = urllib.request.build_opener()
-    if response.status_code != 200:
-        i += 1
-        a = str(response.status_code)
-        write_a = (name_list[i], Year_date[i], a)
-        writer.writerow(write_a)
-        print(name_list[i]+' '+ Year_date[i]+ ' ' +a)
-    else:
+    try:
+        response = requests.get(url_list[i])
+        opener = urllib.request.build_opener()
         opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15')]
-        urllib.request.install_opener(opener)
-        request.urlretrieve( url_list[i],'/targetpath/'+ name_list[i] + Year_date[i] + '.pdf') #.pdf if it is a pdf doc you want to download
-        b = str(response.status_code)
-        write_b = (name_list[i], Year_date[i], b)
-        writer.writerow(write_b)
-        print(name_list[i]+' '+ Year_date[i] + ' '+ b)
-    i += 1
+        if response.status_code != 200:
+            a = str(response.status_code)
+            write_a = (name_list[i], Year_date[i], a)
+            writer.writerow(write_a)
+            print(name_list[i]+' '+ Year_date[i]+ ' ' +a)
+            print(i)
+            i += 1
+
+        else:
+            urllib.request.install_opener(opener)
+            request.urlretrieve( url_list[i],'/path/'+ name_list[i] + Year_date[i] + '.pdf') #.pdf if it is a pdf doc you want to download
+            b = str(response.status_code)
+            write_b = (name_list[i], Year_date[i], b)
+            writer.writerow(write_b)
+            print(name_list[i]+' '+ Year_date[i] + ' '+ b)
+            print(i)
+            i += 1
+    except requests.exceptions.RequestException as e:
+        c = 'Timeout'
+        write_a = (name_list[i], Year_date[i], c)
+        writer.writerow(write_a)
+        print(name_list[i]+' '+ Year_date[i]+ ' ' +c)
+        print(i)
+        i += 1
 
 f.close()
