@@ -25,6 +25,17 @@ i = 0
 f = open('results.csv', 'w')
 writer = csv.writer(f)
 
+DEFAULT_TIMEOUT = 180
+
+old_send = requests.Session.send
+
+def new_send(*args, **kwargs):
+    if kwargs.get("timeout", None) is None:
+        kwargs["timeout"] = DEFAULT_TIMEOUT
+    return old_send(*args, **kwargs)
+
+requests.Session.send = new_send
+
 while i <= max_length-1:
     try:
         response = requests.get(url_list[i])
